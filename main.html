@@ -2007,15 +2007,15 @@ body.page-exit {
     </div>
     <div class="nav-item" id="nav-register" onclick="showPage('register')">
       <div class="nav-label">Compliance Register</div>
-      <div class="nav-badge badge-red">4</div>
+      <div class="nav-badge badge-red" id="nav-register-badge"></div>
     </div>
     <div class="nav-item" id="nav-audits" onclick="showPage('audits')">
       <div class="nav-label">Audits & Checklists</div>
-      <div class="nav-badge badge-red">2</div>
+      <div class="nav-badge badge-red" id="nav-audits-badge"></div>
     </div>
     <div class="nav-item" id="nav-actions" onclick="showPage('actions')">
       <div class="nav-label">Actions & Tasks</div>
-      <div class="nav-badge badge-red">7</div>
+      <div class="nav-badge badge-red" id="nav-actions-badge"></div>
     </div>
     <div class="nav-section-label">HR & Safety</div>
     <div class="nav-item" id="nav-people" onclick="showPage('people')">
@@ -2338,6 +2338,37 @@ function runOnboardingLoad() {
 /* ─────────────────────────────────────────────────────────
    NAVIGATION
 ───────────────────────────────────────────────────────── */
+
+function updateSidebarBadges() {
+  refreshOverdueTasks();
+
+  const complianceCount = DATA.register.filter(item => item.status !== 'ok').length;
+  const checklistCount = DATA.audits.filter(audit => audit.status !== 'completed').length;
+  const openTasksCount = DATA.actions.filter(
+    task => task.status === TASK_STATUS.OPEN || task.status === TASK_STATUS.OVERDUE
+  ).length;
+
+  const badges = [
+    { id: 'nav-register-badge', count: complianceCount },
+    { id: 'nav-audits-badge', count: checklistCount },
+    { id: 'nav-actions-badge', count: openTasksCount },
+  ];
+
+  badges.forEach(({ id, count }) => {
+    const badge = document.getElementById(id);
+    if (!badge) return;
+
+    if (count > 0) {
+      badge.textContent = count;
+      badge.style.display = 'inline-flex';
+      return;
+    }
+
+    badge.textContent = '';
+    badge.style.display = 'none';
+  });
+}
+
 function showPage(page) {
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
   const navEl = document.getElementById('nav-' + page);
@@ -2353,6 +2384,8 @@ function showPage(page) {
     settings:  'Settings',
   };
   document.getElementById('topbar-title').textContent = titles[page] || page;
+
+  updateSidebarBadges();
 
   const content = document.getElementById('content');
   content.innerHTML = '';
@@ -2375,7 +2408,6 @@ function dashboard() {
   const over  = DATA.register.filter(r => r.status === 'overdue').length;
   const due   = DATA.register.filter(r => r.status === 'due').length;
   const ok    = DATA.register.filter(r => r.status === 'ok').length;
-  refreshOverdueTasks();
   const openA = DATA.actions.filter(a => a.status !== TASK_STATUS.COMPLETED).length;
   const totalTasks = DATA.actions.length;
   const completedTasks = DATA.actions.filter(a => a.status === TASK_STATUS.COMPLETED).length;
@@ -3951,6 +3983,7 @@ applyPlantToDatasets();
 hydrateOnboardingPlantInputs();
 document.getElementById('new-freq').addEventListener('change', updateCustomFrequencyFields);
 resetCreateChecklistForm();
+updateSidebarBadges();
 
 const addEmployeeFormNode = document.getElementById('add-employee-form');
 if (addEmployeeFormNode) {
