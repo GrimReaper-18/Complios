@@ -2159,7 +2159,14 @@ const APP_STORAGE_KEYS = {
   documents: 'documents',
   checklists: 'checklists',
   register: 'register',
+  taskResetV1: 'taskResetV1',
 };
+
+function clearLegacyTasksOnce() {
+  if (localStorage.getItem(APP_STORAGE_KEYS.taskResetV1) === '1') return;
+  localStorage.removeItem(APP_STORAGE_KEYS.tasks);
+  localStorage.setItem(APP_STORAGE_KEYS.taskResetV1, '1');
+}
 
 function loadCollectionFromStorage(key, fallback = []) {
   const raw = localStorage.getItem(key);
@@ -3411,7 +3418,7 @@ function actions() {
           <div class="kanban-col-header">
             <div style="width:10px;height:10px;border-radius:50%;background:var(--red-l)"></div>
             <div class="kanban-col-title">Overdue</div>
-            <div class="kanban-count badge-red">${overdue.length}</div>
+            ${overdue.length > 0 ? `<div class="kanban-count badge-red">${overdue.length}</div>` : ''}
           </div>
           ${overdue.map(a => actionCard(a)).join('')}
         </div>
@@ -3419,7 +3426,7 @@ function actions() {
           <div class="kanban-col-header">
             <div style="width:10px;height:10px;border-radius:50%;background:var(--amber-l)"></div>
             <div class="kanban-col-title">Open</div>
-            <div class="kanban-count badge-amber">${open.length}</div>
+            ${open.length > 0 ? `<div class="kanban-count badge-amber">${open.length}</div>` : ''}
           </div>
           ${open.map(a => actionCard(a)).join('')}
         </div>
@@ -3427,7 +3434,7 @@ function actions() {
           <div class="kanban-col-header">
             <div style="width:10px;height:10px;border-radius:50%;background:var(--green-l)"></div>
             <div class="kanban-col-title">Completed</div>
-            <div class="kanban-count badge-green">${done.length}</div>
+            ${done.length > 0 ? `<div class="kanban-count badge-green">${done.length}</div>` : ''}
           </div>
           ${done.map(a => actionCard(a)).join('')}
         </div>
@@ -3992,6 +3999,7 @@ function globalSearch(q) {
 // Start with onboarding, then show dashboard after
 // (modal auto-triggers, dashboard shown after completion)
 loadPlantFromStorage();
+clearLegacyTasksOnce();
 loadAppDataFromStorage();
 loadDocumentsFromStorage();
 saveAppDataToStorage();
