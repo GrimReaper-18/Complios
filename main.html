@@ -641,6 +641,78 @@ body.page-exit {
   gap: 10px;
   flex-shrink: 0;
 }
+.action-buttons {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.action-buttons .btn {
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+}
+.assign-btn {
+  background: #e8dfd5;
+  color: var(--charcoal);
+}
+.assign-btn:hover {
+  background: #ded2c5;
+}
+.remind-btn {
+  background: var(--surface);
+  color: var(--charcoal);
+  border: 1px solid var(--border);
+}
+.remind-btn:hover {
+  background: var(--surface-2);
+}
+.delete-btn {
+  background: #f5d6d6;
+  color: #a94442;
+}
+.delete-btn:hover {
+  background: #efc4c4;
+}
+
+#assignModal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 320;
+  background: rgba(34,51,59,0.5);
+  backdrop-filter: blur(3px);
+  align-items: center;
+  justify-content: center;
+}
+#assignModal.open {
+  display: flex;
+}
+#assignModal .modal-content {
+  background: var(--white);
+  border-radius: 16px;
+  width: min(420px, calc(100vw - 32px));
+  padding: 22px;
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--border);
+}
+#assignModal h3 {
+  font-family: var(--font-d);
+  margin-bottom: 10px;
+  color: var(--charcoal);
+}
+#assignModal select {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  margin-bottom: 12px;
+}
+#assignModal .modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
 
 /* Create action sidebar */
 #action-sidebar-overlay {
@@ -1795,6 +1867,17 @@ body.page-exit {
   </div>
 </div>
 
+<div id="assignModal" class="modal hidden" onclick="if(event.target.id==='assignModal') closeAssignModal()">
+  <div class="modal-content">
+    <h3>Assign Task</h3>
+    <select id="assignUser"></select>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" type="button" onclick="closeAssignModal()">Cancel</button>
+      <button class="btn btn-primary" type="button" onclick="confirmAssign()">Assign</button>
+    </div>
+  </div>
+</div>
+
 <!-- ═══════════════════════════════════════════════════════════════════
      CREATE CHECKLIST MODAL
 ═══════════════════════════════════════════════════════════════════ -->
@@ -2875,6 +2958,7 @@ function closeCreateChecklist() {
 }
 
 let createChecklistStep = 1;
+let currentTaskId = null;
 const CREATE_STEP_COUNT = 3;
 
 function updateCustomFrequencyFields() {
@@ -3606,6 +3690,7 @@ function saveAction() {
 function showActionDetail(id) {
   const a = DATA.actions.find(x => x.id === id);
   if (!a) return;
+  currentTaskId = id;
   if (a.type === 'checklist' && a.checklistId) {
     openChecklist(a.checklistId);
     return;
@@ -3616,7 +3701,7 @@ function showActionDetail(id) {
     <div style="margin-bottom:16px">
       <span class="badge ${a.priority==='high'?'badge-overdue':a.priority==='med'?'badge-due':'badge-pending'}">${a.priority.toUpperCase()} PRIORITY</span>
     </div>
-    ${[['Linked to',a.linked],['Assigned to',a.assignedTo || a.owner],['Due date',a.dueDate || a.due],['Status',a.status.toUpperCase()]].map(([l,v])=>`<div class="detail-row"><div class="detail-label">${l}</div><div class="detail-val">${v}</div></div>`).join('')}
+    ${[['Linked to',a.linked],['Assigned to',a.assignedTo || a.owner || 'Unassigned'],['Due date',a.dueDate || a.due],['Status',a.status.toUpperCase()]].map(([l,v])=>`<div class="detail-row"><div class="detail-label">${l}</div><div class="detail-val">${v}</div></div>`).join('')}
     <div class="divider"></div>
     <div class="upload-zone" onclick="showToast('Upload evidence for this action','info')">
       <div class="upload-zone-icon">📎</div>
@@ -3624,7 +3709,11 @@ function showActionDetail(id) {
     </div>`;
   document.getElementById('drawer-footer').innerHTML = `
     <button class="btn btn-primary" onclick="markActionDone(${a.id})">✅ Mark complete</button>
-    <button class="btn btn-secondary" onclick="showToast('Reminder sent to ' + '${a.owner}','success')">📩 Remind</button>
+    <div class="action-buttons">
+      <button class="btn assign-btn" onclick="openAssignModal()">👤 Assign</button>
+      <button class="btn remind-btn" onclick="showToast('Reminder sent to ' + '${a.owner}','success')">📩 Remind</button>
+      <button class="btn delete-btn" onclick="deleteTask()">🗑 Delete</button>
+    </div>
     <button class="btn btn-ghost btn-sm" onclick="closeDrawer()">Close</button>`;
   openDrawer();
 }
@@ -3642,6 +3731,77 @@ function markActionDone(id) {
   closeDrawer();
   showToast('✅ Action marked complete', 'success');
   showPage('actions');
+}
+
+function closeAssignModal() {
+  document.getElementById('assignModal')?.classList.remove('open');
+}
+
+function openAssignModal() {
+  const task = DATA.actions.find(action => action.id === currentTaskId);
+  if (!task) {
+    showToast('Select a task first', 'warning');
+    return;
+  }
+  const employees = loadCollectionFromStorage(APP_STORAGE_KEYS.employees, []);
+  const select = document.getElementById('assignUser');
+  if (!select) return;
+
+  select.innerHTML = '';
+
+  if (!employees.length) {
+    const placeholder = document.createElement('option');
+    placeholder.value = '';
+    placeholder.textContent = 'No employees available';
+    select.appendChild(placeholder);
+  } else {
+    employees.forEach(emp => {
+      const option = document.createElement('option');
+      const employeeName = emp?.name || '';
+      option.value = employeeName;
+      option.textContent = employeeName;
+      if (employeeName && employeeName === (task.assignedTo || task.owner)) option.selected = true;
+      select.appendChild(option);
+    });
+  }
+
+  document.getElementById('assignModal')?.classList.add('open');
+}
+
+function confirmAssign() {
+  const selected = document.getElementById('assignUser')?.value;
+  if (!selected) {
+    showToast('No employee selected', 'warning');
+    return;
+  }
+
+  DATA.actions = DATA.actions.map(task => {
+    if (task.id === currentTaskId) {
+      return normalizeTask({ ...task, assignedTo: selected, owner: toInitials(selected) });
+    }
+    return normalizeTask(task);
+  });
+
+  saveAppDataToStorage();
+  closeAssignModal();
+  showActionDetail(currentTaskId);
+  showPage('actions');
+  showToast(`Assigned to ${selected}`, 'success');
+}
+
+function deleteTask() {
+  const selectedAction = DATA.actions.find(task => task.id === currentTaskId);
+  if (!selectedAction) {
+    showToast('Task not found', 'warning');
+    return;
+  }
+
+  DATA.actions = DATA.actions.filter(task => task.id !== currentTaskId);
+  saveAppDataToStorage();
+  closeAssignModal();
+  closeDrawer();
+  showPage('actions');
+  showToast(`Deleted "${selectedAction.title}"`, 'success');
 }
 
 /* ─────────────────────────────────────────────────────────
