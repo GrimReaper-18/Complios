@@ -643,14 +643,22 @@ body.page-exit {
 }
 .action-buttons {
   display: flex;
+  justify-content: space-between;
+  align-items: center;
   gap: 10px;
-  flex-wrap: wrap;
+  width: 100%;
+}
+.right-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: nowrap;
 }
 .action-buttons .btn {
   padding: 10px 14px;
   border-radius: 10px;
   border: none;
   cursor: pointer;
+  white-space: nowrap;
 }
 .assign-btn {
   background: #e8dfd5;
@@ -3708,11 +3716,13 @@ function showActionDetail(id) {
       <div class="upload-zone-text">Attach evidence / photo<br/><span style="font-size:11px;color:var(--muted-l)">PDF, JPG, PNG up to 20MB</span></div>
     </div>`;
   document.getElementById('drawer-footer').innerHTML = `
-    <button class="btn btn-primary" onclick="markActionDone(${a.id})">✅ Mark complete</button>
     <div class="action-buttons">
-      <button class="btn assign-btn" onclick="openAssignModal()">👤 Assign</button>
-      <button class="btn remind-btn" onclick="showToast('Reminder sent to ' + '${a.owner}','success')">📩 Remind</button>
-      <button class="btn delete-btn" onclick="deleteTask()">🗑 Delete</button>
+      <button class="btn btn-primary complete-btn" onclick="markActionDone(${a.id})">✅ Mark complete</button>
+      <div class="right-actions">
+        <button class="btn assign-btn" onclick="openAssignModal()">👤 Assign</button>
+        <button class="btn remind-btn" onclick="showToast('Reminder sent to ' + '${a.owner}','success')">📩 Remind</button>
+        <button class="btn delete-btn" onclick="deleteTask()">🗑 Delete</button>
+      </div>
     </div>
     <button class="btn btn-ghost btn-sm" onclick="closeDrawer()">Close</button>`;
   openDrawer();
