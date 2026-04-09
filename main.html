@@ -1723,6 +1723,17 @@ body.page-exit {
 .upload-zone-text { font-size: 13px; color: var(--muted); }
 .upload-zone-text strong { color: var(--orange); }
 
+.upload-box {
+  border: 2px dashed var(--border);
+  border-radius: 10px;
+  padding: 20px;
+  background: var(--surface);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.upload-box:hover { border-color: var(--orange); background: rgba(198,172,143,0.08); }
+#uploadText { font-size: 13px; color: var(--muted); margin-bottom: 4px; }
+
 /* ─────────────────────────────────────────────────────────────────────
    SCROLLBAR STYLING
 ───────────────────────────────────────────────────────────────────── */
@@ -3699,6 +3710,7 @@ function showActionDetail(id) {
   const a = DATA.actions.find(x => x.id === id);
   if (!a) return;
   currentTaskId = id;
+  const evidenceName = a.evidence?.name || 'Attach evidence / photo';
   if (a.type === 'checklist' && a.checklistId) {
     openChecklist(a.checklistId);
     return;
@@ -3711,31 +3723,82 @@ function showActionDetail(id) {
     </div>
     ${[['Linked to',a.linked],['Assigned to',a.assignedTo || a.owner || 'Unassigned'],['Due date',a.dueDate || a.due],['Status',a.status.toUpperCase()]].map(([l,v])=>`<div class="detail-row"><div class="detail-label">${l}</div><div class="detail-val">${v}</div></div>`).join('')}
     <div class="divider"></div>
-    <div class="upload-zone" onclick="showToast('Upload evidence for this action','info')">
-      <div class="upload-zone-icon">📎</div>
-      <div class="upload-zone-text">Attach evidence / photo<br/><span style="font-size:11px;color:var(--muted-l)">PDF, JPG, PNG up to 20MB</span></div>
+    <div class="upload-box" onclick="triggerFileUpload()">
+      <input type="file" id="fileInput" hidden accept=".pdf,.jpg,.jpeg,.png" onchange="handleFileUpload(event)" />
+      <p id="uploadText">${evidenceName}</p>
+      <span style="font-size:11px;color:var(--muted-l)">PDF, JPG, PNG up to 20MB</span>
     </div>`;
   document.getElementById('drawer-footer').innerHTML = `
     <div class="action-buttons">
-      <button class="btn btn-primary complete-btn" onclick="markActionDone(${a.id})">✅ Mark complete</button>
+      <button id="completeBtn" class="btn btn-primary complete-btn" onclick="markComplete()" disabled>✅ Mark complete</button>
       <div class="right-actions">
         <button class="btn assign-btn" onclick="openAssignModal()">👤 Assign</button>
         <button class="btn remind-btn" onclick="showToast('Reminder sent to ' + '${a.owner}','success')">📩 Remind</button>
         <button class="btn delete-btn" onclick="deleteTask()">🗑 Delete</button>
       </div>
     </div>`;
+  checkIfCanComplete();
   openDrawer();
 }
 
-function markActionDone(id) {
-  const a = DATA.actions.find(x => x.id === id);
-  if (a) {
-    a.status = TASK_STATUS.COMPLETED;
-    if (a.type === 'checklist' && a.checklistId) {
-      const linkedChecklist = DATA.audits.find(audit => audit.id === a.checklistId);
-      if (linkedChecklist) linkedChecklist.status = 'completed';
-    }
+function triggerFileUpload() {
+  document.getElementById('fileInput')?.click();
+}
+
+function handleFileUpload(event) {
+  const file = event?.target?.files?.[0];
+  if (!file || !currentTaskId) return;
+
+  const fileData = {
+    name: file.name,
+    size: file.size,
+    uploadedAt: new Date().toISOString()
+  };
+
+  DATA.actions = DATA.actions.map(task => (
+    task.id === currentTaskId ? { ...task, evidence: fileData } : task
+  ));
+  saveAppDataToStorage();
+
+  const uploadText = document.getElementById('uploadText');
+  if (uploadText) uploadText.innerText = file.name;
+  checkIfCanComplete();
+}
+
+function checkIfCanComplete() {
+  const task = DATA.actions.find(action => action.id === currentTaskId);
+  const btn = document.getElementById('completeBtn');
+  if (!btn) return;
+
+  if (task && task.evidence) {
+    btn.disabled = false;
+    btn.style.opacity = '1';
+  } else {
+    btn.disabled = true;
+    btn.style.opacity = '0.5';
   }
+}
+
+function markComplete() {
+  const selectedTask = DATA.actions.find(task => task.id === currentTaskId);
+  if (!selectedTask?.evidence) {
+    showToast('Upload evidence before marking complete', 'warning');
+    checkIfCanComplete();
+    return;
+  }
+
+  DATA.actions = DATA.actions.map(task => {
+    if (task.id === currentTaskId && task.evidence) {
+      const updatedTask = { ...task, status: TASK_STATUS.COMPLETED };
+      if (updatedTask.type === 'checklist' && updatedTask.checklistId) {
+        const linkedChecklist = DATA.audits.find(audit => audit.id === updatedTask.checklistId);
+        if (linkedChecklist) linkedChecklist.status = 'completed';
+      }
+      return updatedTask;
+    }
+    return task;
+  });
+
   saveAppDataToStorage();
   closeDrawer();
   showToast('✅ Action marked complete', 'success');
@@ -4317,6 +4380,9 @@ hydrateOnboardingPlantInputs();
 document.getElementById('new-freq').addEventListener('change', updateCustomFrequencyFields);
 resetCreateChecklistForm();
 updateSidebarBadges();
+window.onload = function () {
+  checkIfCanComplete();
+};
 
 const addEmployeeFormNode = document.getElementById('add-employee-form');
 if (addEmployeeFormNode) {
