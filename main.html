@@ -2160,12 +2160,19 @@ const APP_STORAGE_KEYS = {
   checklists: 'checklists',
   register: 'register',
   taskResetV1: 'taskResetV1',
+  documentsResetV1: 'documentsResetV1',
 };
 
 function clearLegacyTasksOnce() {
   if (localStorage.getItem(APP_STORAGE_KEYS.taskResetV1) === '1') return;
   localStorage.removeItem(APP_STORAGE_KEYS.tasks);
   localStorage.setItem(APP_STORAGE_KEYS.taskResetV1, '1');
+}
+
+function clearLegacyDocumentsOnce() {
+  if (localStorage.getItem(APP_STORAGE_KEYS.documentsResetV1) === '1') return;
+  localStorage.removeItem(APP_STORAGE_KEYS.documents);
+  localStorage.setItem(APP_STORAGE_KEYS.documentsResetV1, '1');
 }
 
 function loadCollectionFromStorage(key, fallback = []) {
@@ -3719,7 +3726,7 @@ function docs() {
     <div class="page-header">
       <div>
         <div class="page-title">Documents & Evidence</div>
-        <div class="page-sub">${visibleDocs.length} ${documentStatusFilter === 'archived' ? 'archived' : 'active'} files · Organised by plant and category</div>
+        <div class="page-sub">${visibleDocs.length} files · Organised by plant and category</div>
       </div>
       <div style="display:flex;gap:10px">
         <button class="btn btn-${documentStatusFilter === 'active' ? 'primary' : 'secondary'}" onclick="switchDocumentStatusFilter('active')">Active (${activeDocs.length})</button>
@@ -3740,7 +3747,12 @@ function docs() {
       </div>
 
       <div class="doc-list">
-        ${filteredDocs.map(d => {
+        ${filteredDocs.length === 0 ? `
+        <div class="empty-state card" style="margin-bottom:12px">
+          <p>No documents uploaded</p>
+          <button class="btn btn-primary" onclick="openUploadDrawer()">+ Upload your first document</button>
+        </div>
+        ` : filteredDocs.map(d => {
           const uploadedAt = getDocUploadedAt(d);
           const status = getDocStatusTag(d.expiry);
           return `
@@ -3757,7 +3769,7 @@ function docs() {
             </div>
           </div>
         </div>`;
-        }).join('') || `<div class="card" style="color:var(--muted);margin-bottom:12px">No documents uploaded</div>`}
+        }).join('')}
 
         <div class="upload-zone" onclick="openUploadDrawer()">
           <div class="upload-zone-icon">📁</div>
@@ -4000,6 +4012,7 @@ function globalSearch(q) {
 // (modal auto-triggers, dashboard shown after completion)
 loadPlantFromStorage();
 clearLegacyTasksOnce();
+clearLegacyDocumentsOnce();
 loadAppDataFromStorage();
 loadDocumentsFromStorage();
 saveAppDataToStorage();
