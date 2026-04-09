@@ -642,6 +642,82 @@ body.page-exit {
   flex-shrink: 0;
 }
 
+/* Create action sidebar */
+#action-sidebar-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(34, 51, 59, 0.36);
+  backdrop-filter: blur(2px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+  z-index: 210;
+}
+#action-sidebar-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+#actionSidebar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: min(380px, 100vw);
+  height: 100vh;
+  background: var(--surface-2);
+  box-shadow: -8px 0 32px rgba(0, 0, 0, 0.16);
+  transform: translateX(100%);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 211;
+  display: flex;
+  flex-direction: column;
+}
+#actionSidebar.active {
+  transform: translateX(0);
+}
+.action-sidebar-content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 24px;
+}
+.action-sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+.action-sidebar-title {
+  font-family: var(--font-d);
+  font-size: 1.4rem;
+  color: var(--charcoal);
+}
+.action-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.action-form-group label {
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-family: var(--font-m);
+  color: var(--muted);
+}
+.action-form-group input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--white);
+  color: var(--charcoal);
+  font-size: 14px;
+}
+.action-form-group input:focus {
+  outline: none;
+  border-color: var(--navy);
+  box-shadow: 0 0 0 3px rgba(34, 51, 59, 0.12);
+}
+
 /* Detail sections */
 .detail-row {
   display: flex;
@@ -1993,6 +2069,31 @@ body.page-exit {
      TOAST CONTAINER
 ═══════════════════════════════════════════════════════════════════ -->
 <div id="toast-container"></div>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     CREATE ACTION SIDEBAR
+═══════════════════════════════════════════════════════════════════ -->
+<div id="action-sidebar-overlay" onclick="closeSidebar()"></div>
+<div id="actionSidebar" role="dialog" aria-modal="true" aria-label="Create Action">
+  <div class="action-sidebar-content">
+    <div class="action-sidebar-header">
+      <h2 class="action-sidebar-title">Create Action</h2>
+      <button class="drawer-close" onclick="closeSidebar()" aria-label="Close create action sidebar">✕</button>
+    </div>
+
+    <div class="action-form-group">
+      <label for="actionTitle">Action Title</label>
+      <input type="text" id="actionTitle" placeholder="Enter action..." />
+    </div>
+
+    <div class="action-form-group">
+      <label for="actionDueDate">Due Date</label>
+      <input type="date" id="actionDueDate" />
+    </div>
+
+    <button class="btn btn-primary" onclick="saveAction()">Create Action</button>
+  </div>
+</div>
 
 <!-- ═══════════════════════════════════════════════════════════════════
      SIDEBAR
@@ -3403,14 +3504,14 @@ function actions() {
           <div class="people-tab active" onclick="this.parentElement.querySelectorAll('.people-tab').forEach(t=>t.classList.remove('active'));this.classList.add('active')">Kanban</div>
           <div class="people-tab" onclick="showPage('actions');this.parentElement.querySelectorAll('.people-tab').forEach(t=>t.classList.remove('active'));this.classList.add('active')">List</div>
         </div>
-        <button class="btn btn-primary" onclick="openCreateTask()">+ Add action</button>
+        <button class="btn btn-primary" onclick="openSidebar()">+ Add action</button>
       </div>
     </div>
 
     ${DATA.actions.length === 0 ? `
       <div class="empty-state">
         <p>No actions yet</p>
-        <button class="btn btn-primary" onclick="openCreateTask()">+ Add your first action</button>
+        <button class="btn btn-primary" onclick="openSidebar()">+ Add your first action</button>
       </div>
     ` : `
       <div class="kanban">
@@ -3448,12 +3549,32 @@ function tasksOpenCount() {
 }
 
 function openCreateTask() {
-  const title = window.prompt('Action title');
-  if (!title || !title.trim()) return;
-  const dueDate = window.prompt('Due date (YYYY-MM-DD, optional)') || '';
+  openSidebar();
+}
+
+function openSidebar() {
+  document.getElementById('action-sidebar-overlay')?.classList.add('active');
+  document.getElementById('actionSidebar')?.classList.add('active');
+  setTimeout(() => document.getElementById('actionTitle')?.focus(), 20);
+}
+
+function closeSidebar() {
+  document.getElementById('action-sidebar-overlay')?.classList.remove('active');
+  document.getElementById('actionSidebar')?.classList.remove('active');
+}
+
+function saveAction() {
+  const title = document.getElementById('actionTitle')?.value?.trim() || '';
+  const dueDate = document.getElementById('actionDueDate')?.value || '';
+
+  if (!title) {
+    showToast('Enter title', 'warning');
+    return;
+  }
+
   const newTask = normalizeTask({
     id: Date.now(),
-    title: title.trim(),
+    title,
     type: 'action',
     category: 'General',
     linked: 'Manual task',
@@ -3463,9 +3584,14 @@ function openCreateTask() {
     status: TASK_STATUS.OPEN,
     priority: 'med',
   });
+
   DATA.actions = [newTask, ...DATA.actions];
   refreshOverdueTasks();
   saveAppDataToStorage();
+
+  document.getElementById('actionTitle').value = '';
+  document.getElementById('actionDueDate').value = '';
+  closeSidebar();
   showToast('Action created', 'success');
   showPage('actions');
 }
