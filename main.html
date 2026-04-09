@@ -2329,7 +2329,7 @@ function runOnboardingLoad() {
   const list = document.getElementById('ob-items');
   setOnboardingIcon('loading');
   msg.textContent = 'Setting up your workspace…';
-  sub.textContent = `Starting with empty data${plantState.state ? ` · ${plantState.state}` : ''}`;
+  sub.textContent = 'Workspace initialized successfully';
 
   const iv = setInterval(() => {
     if (i >= items.length) {
