@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 const STEP_COUNT = 3;
 
@@ -15,13 +15,6 @@ const initialFormData = {
   assignedToEmployeeId: '',
   reviewer: '',
 };
-
-const employeeDirectory = [
-  { id: 'emp-101', name: 'Aarav Sharma', designation: 'Production Supervisor' },
-  { id: 'emp-102', name: 'Priya Nair', designation: 'Safety Officer' },
-  { id: 'emp-103', name: 'Kunal Iyer', designation: 'Maintenance Lead' },
-  { id: 'emp-104', name: 'Neha Gupta', designation: 'Safety Officer' },
-];
 
 function Drawer({ isOpen, onClose, children }) {
   if (!isOpen) return null;
@@ -195,13 +188,26 @@ function Step3({ data, onChange, roleOptions, selectedEmployeeName, assignmentMe
 }
 
 export default function CreateChecklistDrawer() {
+  const [employeeDirectory, setEmployeeDirectory] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState(initialFormData);
 
+  useEffect(() => {
+    const savedEmployees = localStorage.getItem('employees');
+    if (savedEmployees) {
+      try {
+        const parsed = JSON.parse(savedEmployees);
+        if (Array.isArray(parsed)) setEmployeeDirectory(parsed);
+      } catch {
+        localStorage.removeItem('employees');
+      }
+    }
+  }, []);
+
   const roleOptions = useMemo(
-    () => [...new Set(employeeDirectory.map((employee) => employee.designation))],
-    []
+    () => [...new Set(employeeDirectory.map((employee) => employee.designation || employee.role).filter(Boolean))],
+    [employeeDirectory]
   );
 
   const selectedEmployee = useMemo(
@@ -224,7 +230,7 @@ export default function CreateChecklistDrawer() {
       }
       if (key === 'assignedToRole') {
         const mappedEmployee =
-          employeeDirectory.find((employee) => employee.designation === value) || null;
+          employeeDirectory.find((employee) => (employee.designation || employee.role) === value) || null;
         next.assignedToEmployeeId = mappedEmployee ? mappedEmployee.id : '';
       }
       return next;
