@@ -1259,6 +1259,18 @@ body.page-exit {
   align-items: start;
 }
 .kanban-col { background: var(--surface); border-radius: var(--radius-lg); padding: 14px; }
+.empty-state {
+  margin-top: 16px;
+  background: var(--white);
+  border: 1px dashed var(--border-d);
+  border-radius: var(--radius-lg);
+  padding: 28px 20px;
+  text-align: center;
+  display: grid;
+  gap: 12px;
+  justify-items: center;
+}
+.empty-state p { color: var(--muted); font-size: 14px; }
 .kanban-col-header {
   display: flex;
   align-items: center;
@@ -2007,15 +2019,12 @@ body.page-exit {
     </div>
     <div class="nav-item" id="nav-register" onclick="showPage('register')">
       <div class="nav-label">Compliance Register</div>
-      <div class="nav-badge badge-red" id="nav-register-badge"></div>
     </div>
     <div class="nav-item" id="nav-audits" onclick="showPage('audits')">
       <div class="nav-label">Audits & Checklists</div>
-      <div class="nav-badge badge-red" id="nav-audits-badge"></div>
     </div>
     <div class="nav-item" id="nav-actions" onclick="showPage('actions')">
       <div class="nav-label">Actions & Tasks</div>
-      <div class="nav-badge badge-red" id="nav-actions-badge"></div>
     </div>
     <div class="nav-section-label">HR & Safety</div>
     <div class="nav-item" id="nav-people" onclick="showPage('people')">
@@ -2340,32 +2349,6 @@ function runOnboardingLoad() {
 
 function updateSidebarBadges() {
   refreshOverdueTasks();
-
-  const complianceCount = DATA.register.filter(item => item.status !== 'ok').length;
-  const checklistCount = DATA.audits.filter(audit => audit.status !== 'completed').length;
-  const openTasksCount = DATA.actions.filter(
-    task => task.status === TASK_STATUS.OPEN || task.status === TASK_STATUS.OVERDUE
-  ).length;
-
-  const badges = [
-    { id: 'nav-register-badge', count: complianceCount },
-    { id: 'nav-audits-badge', count: checklistCount },
-    { id: 'nav-actions-badge', count: openTasksCount },
-  ];
-
-  badges.forEach(({ id, count }) => {
-    const badge = document.getElementById(id);
-    if (!badge) return;
-
-    if (count > 0) {
-      badge.textContent = count;
-      badge.style.display = 'inline-flex';
-      return;
-    }
-
-    badge.textContent = '';
-    badge.style.display = 'none';
-  });
 }
 
 function showPage(page) {
@@ -3380,6 +3363,8 @@ function actions() {
   const overdue = DATA.actions.filter(a => a.status === TASK_STATUS.OVERDUE);
   const open    = DATA.actions.filter(a => a.status === TASK_STATUS.OPEN);
   const done    = DATA.actions.filter(a => a.status === TASK_STATUS.COMPLETED);
+  const openCount = tasksOpenCount();
+  const doneCount = done.length;
 
   function actionCard(a) {
     const categoryLabel = a.category || a.linked || 'General';
@@ -3404,45 +3389,78 @@ function actions() {
     <div class="page-header">
       <div>
         <div class="page-title">Actions & Tasks</div>
-        <div class="page-sub">${DATA.actions.filter(a=>a.status!==TASK_STATUS.COMPLETED).length} open · ${done.length} completed</div>
+        <div class="page-sub">${openCount} open · ${doneCount} completed</div>
       </div>
       <div style="display:flex;gap:10px">
         <div style="display:flex;gap:4px;background:var(--surface-2);border-radius:10px;padding:4px">
           <div class="people-tab active" onclick="this.parentElement.querySelectorAll('.people-tab').forEach(t=>t.classList.remove('active'));this.classList.add('active')">Kanban</div>
           <div class="people-tab" onclick="showPage('actions');this.parentElement.querySelectorAll('.people-tab').forEach(t=>t.classList.remove('active'));this.classList.add('active')">List</div>
         </div>
-        <button class="btn btn-primary" onclick="showToast('Create action form — coming soon','info')">+ Add action</button>
+        <button class="btn btn-primary" onclick="openCreateTask()">+ Add action</button>
       </div>
     </div>
 
-    <div class="kanban">
-      <div class="kanban-col">
-        <div class="kanban-col-header">
-          <div style="width:10px;height:10px;border-radius:50%;background:var(--red-l)"></div>
-          <div class="kanban-col-title">Overdue</div>
-          <div class="kanban-count badge-red">${overdue.length}</div>
-        </div>
-        ${overdue.map(a => actionCard(a)).join('')}
+    ${DATA.actions.length === 0 ? `
+      <div class="empty-state">
+        <p>No actions yet</p>
+        <button class="btn btn-primary" onclick="openCreateTask()">+ Add your first action</button>
       </div>
-      <div class="kanban-col">
-        <div class="kanban-col-header">
-          <div style="width:10px;height:10px;border-radius:50%;background:var(--amber-l)"></div>
-          <div class="kanban-col-title">Open</div>
-          <div class="kanban-count badge-amber">${open.length}</div>
+    ` : `
+      <div class="kanban">
+        <div class="kanban-col">
+          <div class="kanban-col-header">
+            <div style="width:10px;height:10px;border-radius:50%;background:var(--red-l)"></div>
+            <div class="kanban-col-title">Overdue</div>
+            <div class="kanban-count badge-red">${overdue.length}</div>
+          </div>
+          ${overdue.map(a => actionCard(a)).join('')}
         </div>
-        ${open.map(a => actionCard(a)).join('')}
-      </div>
-      <div class="kanban-col">
-        <div class="kanban-col-header">
-          <div style="width:10px;height:10px;border-radius:50%;background:var(--green-l)"></div>
-          <div class="kanban-col-title">Completed</div>
-          <div class="kanban-count badge-green">${done.length}</div>
+        <div class="kanban-col">
+          <div class="kanban-col-header">
+            <div style="width:10px;height:10px;border-radius:50%;background:var(--amber-l)"></div>
+            <div class="kanban-col-title">Open</div>
+            <div class="kanban-count badge-amber">${open.length}</div>
+          </div>
+          ${open.map(a => actionCard(a)).join('')}
         </div>
-        ${done.map(a => actionCard(a)).join('')}
+        <div class="kanban-col">
+          <div class="kanban-col-header">
+            <div style="width:10px;height:10px;border-radius:50%;background:var(--green-l)"></div>
+            <div class="kanban-col-title">Completed</div>
+            <div class="kanban-count badge-green">${done.length}</div>
+          </div>
+          ${done.map(a => actionCard(a)).join('')}
+        </div>
       </div>
-    </div>
-    ${DATA.actions.length === 0 ? `<div class="card" style="margin-top:16px;color:var(--muted)">No tasks yet</div>` : ''}
+    `}
   </div>`;
+}
+
+function tasksOpenCount() {
+  return DATA.actions.filter(task => task.status === TASK_STATUS.OPEN || task.status === TASK_STATUS.OVERDUE).length;
+}
+
+function openCreateTask() {
+  const title = window.prompt('Action title');
+  if (!title || !title.trim()) return;
+  const dueDate = window.prompt('Due date (YYYY-MM-DD, optional)') || '';
+  const newTask = normalizeTask({
+    id: Date.now(),
+    title: title.trim(),
+    type: 'action',
+    category: 'General',
+    linked: 'Manual task',
+    assignedTo: 'NA',
+    owner: 'NA',
+    dueDate,
+    status: TASK_STATUS.OPEN,
+    priority: 'med',
+  });
+  DATA.actions = [newTask, ...DATA.actions];
+  refreshOverdueTasks();
+  saveAppDataToStorage();
+  showToast('Action created', 'success');
+  showPage('actions');
 }
 
 function showActionDetail(id) {
