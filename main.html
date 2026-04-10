@@ -1495,6 +1495,38 @@ body.page-exit {
 }
 .people-tab.active { background: var(--white); color: var(--charcoal); box-shadow: var(--shadow-sm); font-weight: 600; }
 
+#listView {
+  display: grid;
+  gap: 10px;
+}
+.list-item {
+  background: var(--white);
+  border-radius: 12px;
+  padding: 16px;
+  border: 1px solid #eee;
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+}
+.list-item:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--orange);
+}
+.list-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--charcoal);
+  margin-bottom: 8px;
+}
+.list-meta {
+  font-size: 12px;
+  color: #777;
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+
 /* Training matrix */
 .matrix-scroll { overflow-x: auto; }
 .matrix-table { min-width: 700px; border-collapse: collapse; width: 100%; }
@@ -2598,6 +2630,7 @@ function showPage(page) {
 
 function afterRender(page) {
   if (page === 'dashboard') initCalendar();
+  if (page === 'actions' && actionViewMode === 'list') renderListView();
 }
 
 /* ─────────────────────────────────────────────────────────
@@ -2798,6 +2831,7 @@ function initCalendar() {
 ───────────────────────────────────────────────────────── */
 let activeFilters = { cat: 'All', status: 'All' };
 let activeSearchQuery = '';
+let actionViewMode = 'kanban';
 
 function getRegisterRows() {
   let rows = DATA.register;
@@ -3611,8 +3645,8 @@ function actions() {
       </div>
       <div style="display:flex;gap:10px">
         <div style="display:flex;gap:4px;background:var(--surface-2);border-radius:10px;padding:4px">
-          <div class="people-tab active" onclick="this.parentElement.querySelectorAll('.people-tab').forEach(t=>t.classList.remove('active'));this.classList.add('active')">Kanban</div>
-          <div class="people-tab" onclick="showPage('actions');this.parentElement.querySelectorAll('.people-tab').forEach(t=>t.classList.remove('active'));this.classList.add('active')">List</div>
+          <button type="button" class="people-tab ${actionViewMode === 'kanban' ? 'active' : ''}" id="kanbanBtn" onclick="showKanban()">Kanban</button>
+          <button type="button" class="people-tab ${actionViewMode === 'list' ? 'active' : ''}" id="listBtn" onclick="showList()">List</button>
         </div>
         <button class="btn btn-primary" onclick="openSidebar()">+ Add action</button>
       </div>
@@ -3624,34 +3658,98 @@ function actions() {
         <button class="btn btn-primary" onclick="openSidebar()">+ Add your first action</button>
       </div>
     ` : `
-      <div class="kanban">
-        <div class="kanban-col">
-          <div class="kanban-col-header">
-            <div style="width:10px;height:10px;border-radius:50%;background:var(--red-l)"></div>
-            <div class="kanban-col-title">Overdue</div>
-            ${overdue.length > 0 ? `<div class="kanban-count badge-red">${overdue.length}</div>` : ''}
+      <div id="kanbanView" style="display:${actionViewMode === 'kanban' ? 'block' : 'none'};">
+        <div class="kanban">
+          <div class="kanban-col">
+            <div class="kanban-col-header">
+              <div style="width:10px;height:10px;border-radius:50%;background:var(--red-l)"></div>
+              <div class="kanban-col-title">Overdue</div>
+              ${overdue.length > 0 ? `<div class="kanban-count badge-red">${overdue.length}</div>` : ''}
+            </div>
+            ${overdue.map(a => actionCard(a)).join('')}
           </div>
-          ${overdue.map(a => actionCard(a)).join('')}
-        </div>
-        <div class="kanban-col">
-          <div class="kanban-col-header">
-            <div style="width:10px;height:10px;border-radius:50%;background:var(--amber-l)"></div>
-            <div class="kanban-col-title">Open</div>
-            ${open.length > 0 ? `<div class="kanban-count badge-amber">${open.length}</div>` : ''}
+          <div class="kanban-col">
+            <div class="kanban-col-header">
+              <div style="width:10px;height:10px;border-radius:50%;background:var(--amber-l)"></div>
+              <div class="kanban-col-title">Open</div>
+              ${open.length > 0 ? `<div class="kanban-count badge-amber">${open.length}</div>` : ''}
+            </div>
+            ${open.map(a => actionCard(a)).join('')}
           </div>
-          ${open.map(a => actionCard(a)).join('')}
-        </div>
-        <div class="kanban-col">
-          <div class="kanban-col-header">
-            <div style="width:10px;height:10px;border-radius:50%;background:var(--green-l)"></div>
-            <div class="kanban-col-title">Completed</div>
-            ${done.length > 0 ? `<div class="kanban-count badge-green">${done.length}</div>` : ''}
+          <div class="kanban-col">
+            <div class="kanban-col-header">
+              <div style="width:10px;height:10px;border-radius:50%;background:var(--green-l)"></div>
+              <div class="kanban-col-title">Completed</div>
+              ${done.length > 0 ? `<div class="kanban-count badge-green">${done.length}</div>` : ''}
+            </div>
+            ${done.map(a => actionCard(a)).join('')}
           </div>
-          ${done.map(a => actionCard(a)).join('')}
         </div>
       </div>
+      <div id="listView" style="display:${actionViewMode === 'list' ? 'grid' : 'none'};"></div>
     `}
   </div>`;
+}
+
+function showKanban() {
+  actionViewMode = 'kanban';
+  const kanbanView = document.getElementById('kanbanView');
+  const listView = document.getElementById('listView');
+  if (!kanbanView || !listView) return;
+  kanbanView.style.display = 'block';
+  kanbanView.classList.remove('fade-in');
+  void kanbanView.offsetWidth;
+  kanbanView.classList.add('fade-in');
+  listView.style.display = 'none';
+  setActive('kanbanBtn');
+}
+
+function showList() {
+  actionViewMode = 'list';
+  const kanbanView = document.getElementById('kanbanView');
+  const listView = document.getElementById('listView');
+  if (!kanbanView || !listView) return;
+  kanbanView.style.display = 'none';
+  listView.style.display = 'grid';
+  listView.classList.remove('fade-in');
+  void listView.offsetWidth;
+  listView.classList.add('fade-in');
+  renderListView();
+  setActive('listBtn');
+}
+
+function setActive(activeId) {
+  document.getElementById('kanbanBtn')?.classList.remove('active');
+  document.getElementById('listBtn')?.classList.remove('active');
+  document.getElementById(activeId)?.classList.add('active');
+}
+
+function renderListView() {
+  const container = document.getElementById('listView');
+  if (!container) return;
+  const tasks = DATA.actions.map(normalizeTask);
+  if (tasks.length === 0) {
+    container.innerHTML = `
+      <div class="empty-state">
+        <p>No actions yet</p>
+      </div>
+    `;
+    return;
+  }
+  container.innerHTML = tasks.map(task => {
+    const status = task.status || 'open';
+    const dueDate = task.dueDate || task.due || 'No due date';
+    const onClickHandler = task.type === 'checklist' ? `openChecklist('${task.checklistId}')` : `showActionDetail(${task.id})`;
+    return `
+      <div class="list-item" onclick="${onClickHandler}">
+        <div class="list-title">${task.title}</div>
+        <div class="list-meta">
+          <span>${status}</span>
+          <span>${dueDate}</span>
+        </div>
+      </div>
+    `;
+  }).join('');
 }
 
 function tasksOpenCount() {
