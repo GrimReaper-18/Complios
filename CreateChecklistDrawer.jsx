@@ -344,7 +344,7 @@ const styles = {
     padding: '0 16px',
     borderRadius: 10,
     border: 'none',
-    background: '#1f6feb',
+    background: '#89986D',
     color: '#fff',
     fontWeight: 600,
     cursor: 'pointer',
@@ -359,7 +359,7 @@ const styles = {
   backdrop: {
     position: 'absolute',
     inset: 0,
-    background: 'rgba(15, 23, 42, 0.35)',
+    background: 'rgba(46, 51, 38, 0.35)',
   },
   drawer: {
     position: 'relative',
@@ -388,11 +388,11 @@ const styles = {
     margin: 0,
     fontSize: 20,
     fontWeight: 700,
-    color: '#111827',
+    color: '#2E3326',
   },
   subtitle: {
     margin: '4px 0 0',
-    color: '#6b7280',
+    color: '#89986D',
     fontSize: 13,
   },
   closeBtn: {
@@ -401,7 +401,7 @@ const styles = {
     fontSize: 24,
     lineHeight: 1,
     cursor: 'pointer',
-    color: '#6b7280',
+    color: '#89986D',
   },
   stepIndicatorWrap: {
     padding: '14px 20px 10px',
@@ -410,20 +410,20 @@ const styles = {
   stepLabel: {
     fontSize: 12,
     fontWeight: 600,
-    color: '#4b5563',
+    color: '#667456',
     marginBottom: 8,
   },
   progressTrack: {
     width: '100%',
     height: 6,
     borderRadius: 999,
-    background: '#e5e7eb',
+    background: '#DDE6C8',
     overflow: 'hidden',
   },
   progressFill: {
     height: '100%',
     borderRadius: 999,
-    background: '#1f6feb',
+    background: '#89986D',
     transition: 'width 220ms ease',
   },
   stepContainer: {
@@ -440,7 +440,7 @@ const styles = {
     margin: 0,
     fontSize: 15,
     fontWeight: 700,
-    color: '#111827',
+    color: '#2E3326',
   },
   subSection: {
     display: 'grid',
@@ -451,7 +451,7 @@ const styles = {
     margin: 0,
     fontSize: 13,
     fontWeight: 700,
-    color: '#374151',
+    color: '#4F5A43',
   },
   responsibilityCard: {
     display: 'grid',
@@ -459,7 +459,7 @@ const styles = {
     padding: 14,
     borderRadius: 12,
     border: '1px solid #e5e7eb',
-    background: '#f8fafc',
+    background: '#FBF8EE',
   },
   responsibilityGrid: {
     display: 'grid',
@@ -469,17 +469,17 @@ const styles = {
   label: {
     display: 'grid',
     gap: 6,
-    color: '#374151',
+    color: '#4F5A43',
     fontSize: 13,
     fontWeight: 500,
   },
   successMessage: {
     fontSize: 12,
-    color: '#065f46',
+    color: '#6F8457',
   },
   warningMessage: {
     fontSize: 12,
-    color: '#b45309',
+    color: '#89986D',
   },
   input: {
     height: 38,
@@ -488,7 +488,7 @@ const styles = {
     padding: '0 12px',
     fontSize: 14,
     outline: 'none',
-    color: '#111827',
+    color: '#2E3326',
     background: '#fff',
   },
   footer: {
@@ -504,7 +504,7 @@ const styles = {
     borderRadius: 9,
     border: '1px solid #d1d5db',
     background: '#fff',
-    color: '#111827',
+    color: '#2E3326',
     fontWeight: 600,
     cursor: 'pointer',
   },
@@ -513,7 +513,7 @@ const styles = {
     height: 38,
     borderRadius: 9,
     border: 'none',
-    background: '#1f6feb',
+    background: '#89986D',
     color: '#fff',
     fontWeight: 600,
     cursor: 'pointer',
