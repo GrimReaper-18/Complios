@@ -344,7 +344,7 @@ const styles = {
     padding: '0 16px',
     borderRadius: 10,
     border: 'none',
-    background: '#0F2854',
+    background: '#1B3C53',
     color: '#fff',
     fontWeight: 600,
     cursor: 'pointer',
@@ -365,7 +365,7 @@ const styles = {
     position: 'relative',
     width: 'min(92vw, 460px)',
     height: '100%',
-    background: '#BDE8F5',
+    background: '#E3E3E3',
     boxShadow: '-12px 0 30px rgba(15, 23, 42, 0.15)',
     animation: 'slideInRight 260ms ease-out',
     display: 'flex',
@@ -378,7 +378,7 @@ const styles = {
   },
   header: {
     padding: '20px 20px 14px',
-    borderBottom: '1px solid #4988C4',
+    borderBottom: '1px solid #456882',
     display: 'flex',
     alignItems: 'flex-start',
     justifyContent: 'space-between',
@@ -388,11 +388,11 @@ const styles = {
     margin: 0,
     fontSize: 20,
     fontWeight: 700,
-    color: '#0F2854',
+    color: '#1B3C53',
   },
   subtitle: {
     margin: '4px 0 0',
-    color: '#0F2854',
+    color: '#1B3C53',
     fontSize: 13,
   },
   closeBtn: {
@@ -401,29 +401,29 @@ const styles = {
     fontSize: 24,
     lineHeight: 1,
     cursor: 'pointer',
-    color: '#0F2854',
+    color: '#1B3C53',
   },
   stepIndicatorWrap: {
     padding: '14px 20px 10px',
-    borderBottom: '1px solid #4988C4',
+    borderBottom: '1px solid #456882',
   },
   stepLabel: {
     fontSize: 12,
     fontWeight: 600,
-    color: '#1C4D8D',
+    color: '#234C6A',
     marginBottom: 8,
   },
   progressTrack: {
     width: '100%',
     height: 6,
     borderRadius: 999,
-    background: '#4988C4',
+    background: '#456882',
     overflow: 'hidden',
   },
   progressFill: {
     height: '100%',
     borderRadius: 999,
-    background: '#0F2854',
+    background: '#1B3C53',
     transition: 'width 220ms ease',
   },
   stepContainer: {
@@ -440,7 +440,7 @@ const styles = {
     margin: 0,
     fontSize: 15,
     fontWeight: 700,
-    color: '#0F2854',
+    color: '#1B3C53',
   },
   subSection: {
     display: 'grid',
@@ -451,15 +451,15 @@ const styles = {
     margin: 0,
     fontSize: 13,
     fontWeight: 700,
-    color: '#0F2854',
+    color: '#1B3C53',
   },
   responsibilityCard: {
     display: 'grid',
     gap: 14,
     padding: 14,
     borderRadius: 12,
-    border: '1px solid #4988C4',
-    background: '#BDE8F5',
+    border: '1px solid #456882',
+    background: '#E3E3E3',
   },
   responsibilityGrid: {
     display: 'grid',
@@ -469,31 +469,31 @@ const styles = {
   label: {
     display: 'grid',
     gap: 6,
-    color: '#0F2854',
+    color: '#1B3C53',
     fontSize: 13,
     fontWeight: 500,
   },
   successMessage: {
     fontSize: 12,
-    color: '#0F2854',
+    color: '#1B3C53',
   },
   warningMessage: {
     fontSize: 12,
-    color: '#0F2854',
+    color: '#1B3C53',
   },
   input: {
     height: 38,
-    border: '1px solid #4988C4',
+    border: '1px solid #456882',
     borderRadius: 9,
     padding: '0 12px',
     fontSize: 14,
     outline: 'none',
-    color: '#0F2854',
-    background: '#BDE8F5',
+    color: '#1B3C53',
+    background: '#E3E3E3',
   },
   footer: {
     padding: 20,
-    borderTop: '1px solid #4988C4',
+    borderTop: '1px solid #456882',
     display: 'flex',
     justifyContent: 'space-between',
     gap: 12,
@@ -502,9 +502,9 @@ const styles = {
     minWidth: 88,
     height: 38,
     borderRadius: 9,
-    border: '1px solid #4988C4',
-    background: '#BDE8F5',
-    color: '#0F2854',
+    border: '1px solid #456882',
+    background: '#E3E3E3',
+    color: '#1B3C53',
     fontWeight: 600,
     cursor: 'pointer',
   },
@@ -513,7 +513,7 @@ const styles = {
     height: 38,
     borderRadius: 9,
     border: 'none',
-    background: '#0F2854',
+    background: '#1B3C53',
     color: '#fff',
     fontWeight: 600,
     cursor: 'pointer',
@@ -537,8 +537,8 @@ if (typeof document !== 'undefined' && !document.getElementById('create-checklis
       cursor: not-allowed !important;
     }
     input:focus, select:focus {
-      border-color: #0F2854 !important;
-      box-shadow: 0 0 0 3px rgba(15, 40, 84, .2);
+      border-color: #1B3C53 !important;
+      box-shadow: 0 0 0 3px rgba(27, 60, 83, .2);
     }
   `;
   document.head.appendChild(styleTag);
