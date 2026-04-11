@@ -344,7 +344,7 @@ const styles = {
     padding: '0 16px',
     borderRadius: 10,
     border: 'none',
-    background: '#546B41',
+    background: '#33395A',
     color: '#fff',
     fontWeight: 600,
     cursor: 'pointer',
@@ -359,13 +359,13 @@ const styles = {
   backdrop: {
     position: 'absolute',
     inset: 0,
-    background: 'rgba(46, 51, 38, 0.35)',
+    background: 'rgba(43, 49, 75, 0.35)',
   },
   drawer: {
     position: 'relative',
     width: 'min(92vw, 460px)',
     height: '100%',
-    background: '#FFF8EC',
+    background: '#E8E5D7',
     boxShadow: '-12px 0 30px rgba(15, 23, 42, 0.15)',
     animation: 'slideInRight 260ms ease-out',
     display: 'flex',
@@ -378,7 +378,7 @@ const styles = {
   },
   header: {
     padding: '20px 20px 14px',
-    borderBottom: '1px solid #DCCCAC',
+    borderBottom: '1px solid #D6D0B8',
     display: 'flex',
     alignItems: 'flex-start',
     justifyContent: 'space-between',
@@ -388,11 +388,11 @@ const styles = {
     margin: 0,
     fontSize: 20,
     fontWeight: 700,
-    color: '#2E3326',
+    color: '#2B314B',
   },
   subtitle: {
     margin: '4px 0 0',
-    color: '#546B41',
+    color: '#33395A',
     fontSize: 13,
   },
   closeBtn: {
@@ -401,29 +401,29 @@ const styles = {
     fontSize: 24,
     lineHeight: 1,
     cursor: 'pointer',
-    color: '#546B41',
+    color: '#33395A',
   },
   stepIndicatorWrap: {
     padding: '14px 20px 10px',
-    borderBottom: '1px solid #DCCCAC',
+    borderBottom: '1px solid #D6D0B8',
   },
   stepLabel: {
     fontSize: 12,
     fontWeight: 600,
-    color: '#99AD7A',
+    color: '#ACBAC4',
     marginBottom: 8,
   },
   progressTrack: {
     width: '100%',
     height: 6,
     borderRadius: 999,
-    background: '#DCCCAC',
+    background: '#D6D0B8',
     overflow: 'hidden',
   },
   progressFill: {
     height: '100%',
     borderRadius: 999,
-    background: '#546B41',
+    background: '#33395A',
     transition: 'width 220ms ease',
   },
   stepContainer: {
@@ -440,7 +440,7 @@ const styles = {
     margin: 0,
     fontSize: 15,
     fontWeight: 700,
-    color: '#2E3326',
+    color: '#2B314B',
   },
   subSection: {
     display: 'grid',
@@ -451,15 +451,15 @@ const styles = {
     margin: 0,
     fontSize: 13,
     fontWeight: 700,
-    color: '#546B41',
+    color: '#33395A',
   },
   responsibilityCard: {
     display: 'grid',
     gap: 14,
     padding: 14,
     borderRadius: 12,
-    border: '1px solid #DCCCAC',
-    background: '#FFF8EC',
+    border: '1px solid #D6D0B8',
+    background: '#E8E5D7',
   },
   responsibilityGrid: {
     display: 'grid',
@@ -469,31 +469,31 @@ const styles = {
   label: {
     display: 'grid',
     gap: 6,
-    color: '#546B41',
+    color: '#33395A',
     fontSize: 13,
     fontWeight: 500,
   },
   successMessage: {
     fontSize: 12,
-    color: '#546B41',
+    color: '#33395A',
   },
   warningMessage: {
     fontSize: 12,
-    color: '#546B41',
+    color: '#33395A',
   },
   input: {
     height: 38,
-    border: '1px solid #DCCCAC',
+    border: '1px solid #D6D0B8',
     borderRadius: 9,
     padding: '0 12px',
     fontSize: 14,
     outline: 'none',
-    color: '#2E3326',
-    background: '#FFF8EC',
+    color: '#2B314B',
+    background: '#E8E5D7',
   },
   footer: {
     padding: 20,
-    borderTop: '1px solid #DCCCAC',
+    borderTop: '1px solid #D6D0B8',
     display: 'flex',
     justifyContent: 'space-between',
     gap: 12,
@@ -502,9 +502,9 @@ const styles = {
     minWidth: 88,
     height: 38,
     borderRadius: 9,
-    border: '1px solid #DCCCAC',
-    background: '#FFF8EC',
-    color: '#2E3326',
+    border: '1px solid #D6D0B8',
+    background: '#E8E5D7',
+    color: '#2B314B',
     fontWeight: 600,
     cursor: 'pointer',
   },
@@ -513,7 +513,7 @@ const styles = {
     height: 38,
     borderRadius: 9,
     border: 'none',
-    background: '#546B41',
+    background: '#33395A',
     color: '#fff',
     fontWeight: 600,
     cursor: 'pointer',
@@ -537,8 +537,8 @@ if (typeof document !== 'undefined' && !document.getElementById('create-checklis
       cursor: not-allowed !important;
     }
     input:focus, select:focus {
-      border-color: #546B41 !important;
-      box-shadow: 0 0 0 3px rgba(84, 107, 65, .2);
+      border-color: #33395A !important;
+      box-shadow: 0 0 0 3px rgba(51, 57, 90, .2);
     }
   `;
   document.head.appendChild(styleTag);
