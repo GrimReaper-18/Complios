@@ -12,29 +12,29 @@
    DESIGN TOKENS
 ───────────────────────────────────────────────────────────────────── */
 :root {
-  --navy:        #89986D;
-  --navy-mid:    #9CAB84;
-  --navy-light:  #C5D89D;
-  --teal:        #9CAB84;
-  --orange:      #C5D89D;
-  --orange-d:    #9CAB84;
-  --orange-l:    #F6F0D7;
-  --green:       #9CAB84;
-  --green-d:     #89986D;
-  --green-l:     #C5D89D;
+  --navy:        #546B41;
+  --navy-mid:    #99AD7A;
+  --navy-light:  #DCCCAC;
+  --teal:        #99AD7A;
+  --orange:      #DCCCAC;
+  --orange-d:    #99AD7A;
+  --orange-l:    #FFF8EC;
+  --green:       #99AD7A;
+  --green-d:     #546B41;
+  --green-l:     #DCCCAC;
   --red:         #2E3326;
-  --red-l:       #9CAB84;
-  --amber:       #C5D89D;
-  --amber-l:     #F6F0D7;
-  --surface:     #F6F0D7;
-  --surface-2:   #FBF8EE;
+  --red-l:       #99AD7A;
+  --amber:       #DCCCAC;
+  --amber-l:     #FFF8EC;
+  --surface:     #FFF8EC;
+  --surface-2:   #FFF8EC;
   --white:       #FFFFFF;
   --charcoal:    #2E3326;
-  --slate:       #89986D;
-  --muted:       #9CAB84;
-  --muted-l:     #8B7B67;
-  --border:      #DDE6C8;
-  --border-d:    #C5D89D;
+  --slate:       #546B41;
+  --muted:       #99AD7A;
+  --muted-l:     #99AD7A;
+  --border:      #DCCCAC;
+  --border-d:    #DCCCAC;
 
   --font-d: 'Syne', sans-serif;
   --font-b: 'DM Sans', sans-serif;
@@ -218,9 +218,9 @@ body.page-exit {
   padding: 1px 6px;
   border-radius: 10px;
 }
-.badge-red   { background: rgba(10,9,8,0.18); color: #9CAB84; }
-.badge-amber { background: rgba(198,172,143,0.30); color: #9CAB84; }
-.badge-green { background: rgba(94,80,63,0.20);  color: #F6F0D7; }
+.badge-red   { background: rgba(10,9,8,0.18); color: #99AD7A; }
+.badge-amber { background: rgba(198,172,143,0.30); color: #99AD7A; }
+.badge-green { background: rgba(94,80,63,0.20);  color: #FFF8EC; }
 
 .sidebar-user {
   padding: 12px 14px;
@@ -2539,13 +2539,13 @@ function setOnboardingIcon(type = 'loading') {
       <svg viewBox="0 0 78 78" role="img" aria-label="Complete">
         <defs>
           <linearGradient id="obSuccessBg" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="#C5D89D"></stop>
-            <stop offset="100%" stop-color="#9CAB84"></stop>
+            <stop offset="0%" stop-color="#DCCCAC"></stop>
+            <stop offset="100%" stop-color="#99AD7A"></stop>
           </linearGradient>
         </defs>
         <circle cx="39" cy="39" r="36" fill="url(#obSuccessBg)" opacity="0.22"></circle>
-        <circle cx="39" cy="39" r="27" fill="none" stroke="#9CAB84" stroke-width="2.5"></circle>
-        <path d="M27 39.5l8 8 16-16" fill="none" stroke="#89986D" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"></path>
+        <circle cx="39" cy="39" r="27" fill="none" stroke="#99AD7A" stroke-width="2.5"></circle>
+        <path d="M27 39.5l8 8 16-16" fill="none" stroke="#546B41" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"></path>
       </svg>
     `;
     return;
@@ -2554,14 +2554,14 @@ function setOnboardingIcon(type = 'loading') {
     <svg viewBox="0 0 78 78" role="img" aria-label="Setup in progress">
       <defs>
         <linearGradient id="obLoadBg" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stop-color="#89986D"></stop>
-          <stop offset="100%" stop-color="#9CAB84"></stop>
+          <stop offset="0%" stop-color="#546B41"></stop>
+          <stop offset="100%" stop-color="#99AD7A"></stop>
         </linearGradient>
       </defs>
-      <circle cx="39" cy="39" r="36" fill="#F6F0D7"></circle>
+      <circle cx="39" cy="39" r="36" fill="#FFF8EC"></circle>
       <circle cx="39" cy="39" r="28" fill="none" stroke="url(#obLoadBg)" stroke-width="2.5"></circle>
-      <path d="M26 47V31l13-6 13 6v16" fill="none" stroke="#9CAB84" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"></path>
-      <path d="M33 42h12M33 36h8" stroke="#89986D" stroke-width="2.6" stroke-linecap="round"></path>
+      <path d="M26 47V31l13-6 13 6v16" fill="none" stroke="#99AD7A" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"></path>
+      <path d="M33 42h12M33 36h8" stroke="#546B41" stroke-width="2.6" stroke-linecap="round"></path>
     </svg>
   `;
 }
