@@ -1495,6 +1495,36 @@ body.page-exit {
 }
 .people-tab.active { background: var(--white); color: var(--charcoal); box-shadow: var(--shadow-sm); font-weight: 600; }
 
+.view-toggle {
+  display: inline-flex;
+  background: #efe7dd;
+  padding: 4px;
+  border-radius: 12px;
+  gap: 4px;
+}
+.toggle-btn {
+  border: none;
+  padding: 8px 18px;
+  border-radius: 10px;
+  background: transparent;
+  color: #6b5e4b;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  transform: scale(1);
+}
+.toggle-btn.active {
+  background: var(--white);
+  color: #2c2c2c;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+.toggle-btn:hover {
+  background: rgba(255,255,255,0.6);
+}
+.toggle-btn:active {
+  transform: scale(0.97);
+}
+
 #listView {
   display: grid;
   gap: 10px;
@@ -3644,9 +3674,9 @@ function actions() {
         <div class="page-sub">${openCount} open · ${doneCount} completed</div>
       </div>
       <div style="display:flex;gap:10px">
-        <div style="display:flex;gap:4px;background:var(--surface-2);border-radius:10px;padding:4px">
-          <button type="button" class="people-tab ${actionViewMode === 'kanban' ? 'active' : ''}" id="kanbanBtn" onclick="showKanban()">Kanban</button>
-          <button type="button" class="people-tab ${actionViewMode === 'list' ? 'active' : ''}" id="listBtn" onclick="showList()">List</button>
+        <div class="view-toggle">
+          <button type="button" class="toggle-btn ${actionViewMode === 'kanban' ? 'active' : ''}" id="kanbanBtn" onclick="showKanban()">Kanban</button>
+          <button type="button" class="toggle-btn ${actionViewMode === 'list' ? 'active' : ''}" id="listBtn" onclick="showList()">List</button>
         </div>
         <button class="btn btn-primary" onclick="openSidebar()">+ Add action</button>
       </div>
@@ -3719,8 +3749,7 @@ function showList() {
 }
 
 function setActive(activeId) {
-  document.getElementById('kanbanBtn')?.classList.remove('active');
-  document.getElementById('listBtn')?.classList.remove('active');
+  document.querySelectorAll('.toggle-btn').forEach(btn => btn.classList.remove('active'));
   document.getElementById(activeId)?.classList.add('active');
 }
 
