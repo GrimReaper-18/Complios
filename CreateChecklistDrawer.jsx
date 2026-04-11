@@ -344,7 +344,7 @@ const styles = {
     padding: '0 16px',
     borderRadius: 10,
     border: 'none',
-    background: '#89986D',
+    background: '#546B41',
     color: '#fff',
     fontWeight: 600,
     cursor: 'pointer',
@@ -365,7 +365,7 @@ const styles = {
     position: 'relative',
     width: 'min(92vw, 460px)',
     height: '100%',
-    background: '#fff',
+    background: '#FFF8EC',
     boxShadow: '-12px 0 30px rgba(15, 23, 42, 0.15)',
     animation: 'slideInRight 260ms ease-out',
     display: 'flex',
@@ -378,7 +378,7 @@ const styles = {
   },
   header: {
     padding: '20px 20px 14px',
-    borderBottom: '1px solid #eef1f6',
+    borderBottom: '1px solid #DCCCAC',
     display: 'flex',
     alignItems: 'flex-start',
     justifyContent: 'space-between',
@@ -392,7 +392,7 @@ const styles = {
   },
   subtitle: {
     margin: '4px 0 0',
-    color: '#89986D',
+    color: '#546B41',
     fontSize: 13,
   },
   closeBtn: {
@@ -401,29 +401,29 @@ const styles = {
     fontSize: 24,
     lineHeight: 1,
     cursor: 'pointer',
-    color: '#89986D',
+    color: '#546B41',
   },
   stepIndicatorWrap: {
     padding: '14px 20px 10px',
-    borderBottom: '1px solid #eef1f6',
+    borderBottom: '1px solid #DCCCAC',
   },
   stepLabel: {
     fontSize: 12,
     fontWeight: 600,
-    color: '#667456',
+    color: '#99AD7A',
     marginBottom: 8,
   },
   progressTrack: {
     width: '100%',
     height: 6,
     borderRadius: 999,
-    background: '#DDE6C8',
+    background: '#DCCCAC',
     overflow: 'hidden',
   },
   progressFill: {
     height: '100%',
     borderRadius: 999,
-    background: '#89986D',
+    background: '#546B41',
     transition: 'width 220ms ease',
   },
   stepContainer: {
@@ -451,15 +451,15 @@ const styles = {
     margin: 0,
     fontSize: 13,
     fontWeight: 700,
-    color: '#4F5A43',
+    color: '#546B41',
   },
   responsibilityCard: {
     display: 'grid',
     gap: 14,
     padding: 14,
     borderRadius: 12,
-    border: '1px solid #e5e7eb',
-    background: '#FBF8EE',
+    border: '1px solid #DCCCAC',
+    background: '#FFF8EC',
   },
   responsibilityGrid: {
     display: 'grid',
@@ -469,31 +469,31 @@ const styles = {
   label: {
     display: 'grid',
     gap: 6,
-    color: '#4F5A43',
+    color: '#546B41',
     fontSize: 13,
     fontWeight: 500,
   },
   successMessage: {
     fontSize: 12,
-    color: '#6F8457',
+    color: '#546B41',
   },
   warningMessage: {
     fontSize: 12,
-    color: '#89986D',
+    color: '#546B41',
   },
   input: {
     height: 38,
-    border: '1px solid #d1d5db',
+    border: '1px solid #DCCCAC',
     borderRadius: 9,
     padding: '0 12px',
     fontSize: 14,
     outline: 'none',
     color: '#2E3326',
-    background: '#fff',
+    background: '#FFF8EC',
   },
   footer: {
     padding: 20,
-    borderTop: '1px solid #eef1f6',
+    borderTop: '1px solid #DCCCAC',
     display: 'flex',
     justifyContent: 'space-between',
     gap: 12,
@@ -502,8 +502,8 @@ const styles = {
     minWidth: 88,
     height: 38,
     borderRadius: 9,
-    border: '1px solid #d1d5db',
-    background: '#fff',
+    border: '1px solid #DCCCAC',
+    background: '#FFF8EC',
     color: '#2E3326',
     fontWeight: 600,
     cursor: 'pointer',
@@ -513,7 +513,7 @@ const styles = {
     height: 38,
     borderRadius: 9,
     border: 'none',
-    background: '#89986D',
+    background: '#546B41',
     color: '#fff',
     fontWeight: 600,
     cursor: 'pointer',
@@ -537,8 +537,8 @@ if (typeof document !== 'undefined' && !document.getElementById('create-checklis
       cursor: not-allowed !important;
     }
     input:focus, select:focus {
-      border-color: #1f6feb !important;
-      box-shadow: 0 0 0 3px rgba(31, 111, 235, .15);
+      border-color: #546B41 !important;
+      box-shadow: 0 0 0 3px rgba(84, 107, 65, .2);
     }
   `;
   document.head.appendChild(styleTag);
