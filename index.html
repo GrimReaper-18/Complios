@@ -9,18 +9,18 @@
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;700;800&family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@500&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --navy: #4B2E2B;
-      --brown: #8C5A3C;
-      --sand: #C08552;
-      --paper: #FFF8F0;
-      --paper-2: #FFF8F0;
-      --ink: #4B2E2B;
+      --navy: #37353E;
+      --brown: #44444E;
+      --sand: #715A5A;
+      --paper: #D3DAD9;
+      --paper-2: #D3DAD9;
+      --ink: #37353E;
       --white: #fff;
-      --line: #C08552;
-      --accent: #C08552;
+      --line: #715A5A;
+      --accent: #715A5A;
       --radius-xl: 22px;
       --radius-md: 12px;
-      --shadow: 0 20px 40px rgba(75, 46, 43, 0.18);
+      --shadow: 0 20px 40px rgba(55, 53, 62, 0.18);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -32,7 +32,7 @@
       background:
         radial-gradient(circle at 12% 18%, rgba(255, 255, 255, 0.35), transparent 34%),
         radial-gradient(circle at 82% 8%, rgba(255, 255, 255, 0.24), transparent 28%),
-        #FFF8F0;
+        #D3DAD9;
       display: grid;
       place-items: center;
       padding: 32px;
@@ -44,9 +44,9 @@
       pointer-events: none;
       opacity: 0.16;
       background-image:
-        radial-gradient(circle at 80% 16%, transparent 0 52px, #8C5A3C 53px 55px, transparent 56px),
-        radial-gradient(circle at 90% 26%, transparent 0 34px, #8C5A3C 35px 36px, transparent 37px),
-        linear-gradient(145deg, transparent 45%, #8C5A3C 45% 46%, transparent 47%);
+        radial-gradient(circle at 80% 16%, transparent 0 52px, #44444E 53px 55px, transparent 56px),
+        radial-gradient(circle at 90% 26%, transparent 0 34px, #44444E 35px 36px, transparent 37px),
+        linear-gradient(145deg, transparent 45%, #44444E 45% 46%, transparent 47%);
     }
 
     .login-shell {
@@ -76,10 +76,10 @@
       width: min(620px, 95%);
       aspect-ratio: 1 / 1;
       border-radius: 20px;
-      background: #FFF8F0;
+      background: #D3DAD9;
       display: grid;
       place-items: center;
-      border: 1px solid rgba(192, 133, 82, 0.18);
+      border: 1px solid rgba(113, 90, 90, 0.18);
     }
 
     .art svg { width: 88%; height: 88%; }
@@ -100,7 +100,7 @@
     h1 {
       font-family: 'Syne', sans-serif;
       font-size: clamp(2rem, 3vw, 3rem);
-      color: #4B2E2B;
+      color: #37353E;
       line-height: 1;
       margin-bottom: 8px;
     }
@@ -114,8 +114,8 @@
 
     .field {
       width: 100%;
-      border: 1px solid #C08552;
-      background: #FFF8F0;
+      border: 1px solid #715A5A;
+      background: #D3DAD9;
       border-radius: 10px;
       height: 54px;
       padding: 0 16px;
@@ -126,7 +126,7 @@
 
     .field:focus {
       border-color: var(--navy);
-      box-shadow: 0 0 0 3px rgba(75, 46, 43, 0.12);
+      box-shadow: 0 0 0 3px rgba(55, 53, 62, 0.12);
     }
 
     .password-wrap {
@@ -178,7 +178,7 @@
     }
 
     .password-toggle:hover {
-      background: rgba(75, 46, 43, 0.08);
+      background: rgba(55, 53, 62, 0.08);
       color: var(--navy);
     }
 
@@ -244,7 +244,7 @@
       height: 54px;
       border: 0;
       border-radius: 12px;
-      background: linear-gradient(90deg, #4B2E2B, #8C5A3C);
+      background: linear-gradient(90deg, #37353E, #44444E);
       color: var(--paper-2);
       font-size: 1.04rem;
       font-weight: 700;
@@ -267,13 +267,13 @@
 
     .signup {
       text-align: center;
-      color: #8C5A3C;
+      color: #44444E;
       margin-top: 10px;
       font-size: 1.02rem;
     }
 
     .signup a {
-      color: #4B2E2B;
+      color: #37353E;
       font-weight: 700;
       text-decoration: none;
     }
