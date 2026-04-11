@@ -344,8 +344,8 @@ const styles = {
     padding: '0 16px',
     borderRadius: 10,
     border: 'none',
-    background: '#305973',
-    color: '#fff',
+    background: '#102C57',
+    color: '#FEFAF6',
     fontWeight: 600,
     cursor: 'pointer',
   },
@@ -359,14 +359,14 @@ const styles = {
   backdrop: {
     position: 'absolute',
     inset: 0,
-    background: 'rgba(48, 89, 115, 0.35)',
+    background: 'rgba(16, 44, 87, 0.35)',
   },
   drawer: {
     position: 'relative',
     width: 'min(92vw, 460px)',
     height: '100%',
-    background: '#F9F9F9',
-    boxShadow: '-12px 0 30px rgba(48, 89, 115, 0.18)',
+    background: '#FEFAF6',
+    boxShadow: '-12px 0 30px rgba(16, 44, 87, 0.18)',
     animation: 'slideInRight 260ms ease-out',
     display: 'flex',
     flexDirection: 'column',
@@ -378,7 +378,7 @@ const styles = {
   },
   header: {
     padding: '20px 20px 14px',
-    borderBottom: '1px solid #DED5C4',
+    borderBottom: '1px solid #EADBC8',
     display: 'flex',
     alignItems: 'flex-start',
     justifyContent: 'space-between',
@@ -388,11 +388,11 @@ const styles = {
     margin: 0,
     fontSize: 20,
     fontWeight: 700,
-    color: '#305973',
+    color: '#102C57',
   },
   subtitle: {
     margin: '4px 0 0',
-    color: '#305973',
+    color: '#102C57',
     fontSize: 13,
   },
   closeBtn: {
@@ -401,29 +401,29 @@ const styles = {
     fontSize: 24,
     lineHeight: 1,
     cursor: 'pointer',
-    color: '#305973',
+    color: '#102C57',
   },
   stepIndicatorWrap: {
     padding: '14px 20px 10px',
-    borderBottom: '1px solid #DED5C4',
+    borderBottom: '1px solid #EADBC8',
   },
   stepLabel: {
     fontSize: 12,
     fontWeight: 600,
-    color: '#44444E',
+    color: '#102C57',
     marginBottom: 8,
   },
   progressTrack: {
     width: '100%',
     height: 6,
     borderRadius: 999,
-    background: '#DED5C4',
+    background: '#EADBC8',
     overflow: 'hidden',
   },
   progressFill: {
     height: '100%',
     borderRadius: 999,
-    background: '#EF7E56',
+    background: '#DAC0A3',
     transition: 'width 220ms ease',
   },
   stepContainer: {
@@ -440,7 +440,7 @@ const styles = {
     margin: 0,
     fontSize: 15,
     fontWeight: 700,
-    color: '#305973',
+    color: '#102C57',
   },
   subSection: {
     display: 'grid',
@@ -451,15 +451,15 @@ const styles = {
     margin: 0,
     fontSize: 13,
     fontWeight: 700,
-    color: '#305973',
+    color: '#102C57',
   },
   responsibilityCard: {
     display: 'grid',
     gap: 14,
     padding: 14,
     borderRadius: 12,
-    border: '1px solid #DED5C4',
-    background: '#DED5C4',
+    border: '1px solid #EADBC8',
+    background: '#EADBC8',
   },
   responsibilityGrid: {
     display: 'grid',
@@ -469,31 +469,31 @@ const styles = {
   label: {
     display: 'grid',
     gap: 6,
-    color: '#305973',
+    color: '#102C57',
     fontSize: 13,
     fontWeight: 500,
   },
   successMessage: {
     fontSize: 12,
-    color: '#305973',
+    color: '#102C57',
   },
   warningMessage: {
     fontSize: 12,
-    color: '#305973',
+    color: '#102C57',
   },
   input: {
     height: 38,
-    border: '1px solid #DED5C4',
+    border: '1px solid #EADBC8',
     borderRadius: 9,
     padding: '0 12px',
     fontSize: 14,
     outline: 'none',
-    color: '#305973',
-    background: '#F9F9F9',
+    color: '#102C57',
+    background: '#FEFAF6',
   },
   footer: {
     padding: 20,
-    borderTop: '1px solid #DED5C4',
+    borderTop: '1px solid #EADBC8',
     display: 'flex',
     justifyContent: 'space-between',
     gap: 12,
@@ -502,9 +502,9 @@ const styles = {
     minWidth: 88,
     height: 38,
     borderRadius: 9,
-    border: '1px solid #DED5C4',
-    background: '#F9F9F9',
-    color: '#305973',
+    border: '1px solid #EADBC8',
+    background: '#FEFAF6',
+    color: '#102C57',
     fontWeight: 600,
     cursor: 'pointer',
   },
@@ -513,8 +513,8 @@ const styles = {
     height: 38,
     borderRadius: 9,
     border: 'none',
-    background: '#EF7E56',
-    color: '#fff',
+    background: '#DAC0A3',
+    color: '#FEFAF6',
     fontWeight: 600,
     cursor: 'pointer',
   },
@@ -537,8 +537,8 @@ if (typeof document !== 'undefined' && !document.getElementById('create-checklis
       cursor: not-allowed !important;
     }
     input:focus, select:focus {
-      border-color: #EF7E56 !important;
-      box-shadow: 0 0 0 3px rgba(239, 126, 86, .25);
+      border-color: #DAC0A3 !important;
+      box-shadow: 0 0 0 3px rgba(218, 192, 163, .25);
     }
   `;
   document.head.appendChild(styleTag);
